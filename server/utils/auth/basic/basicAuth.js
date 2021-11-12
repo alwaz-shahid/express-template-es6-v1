@@ -1,6 +1,18 @@
-function userAuth(req, res, next) {
+export function userAuth(req, res, next) {
+    if (req.user == null) {
+        res.status(403).send('Not logged in 😅');
+    }
+    next();
 }
 
+export function userRole(role) {
+    return (req, res, next) => {
+        if (req.user.role !== role) {
+            res.status(403).send('Unauthorized');
+        }
+        next();
+    }
+}
 
 
 

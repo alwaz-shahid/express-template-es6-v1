@@ -1,8 +1,8 @@
 import express from 'express'
 
 import projectRouter from './routes/projects.js'
-import users from './utils/data.js'
-
+import users, { ROLE } from './utils/data.js'
+import { userAuth, userRole } from './utils/auth/basic/basicAuth'
 const app = express()
 // const projectRouter = require('./routes/projects').default
 
@@ -14,11 +14,11 @@ app.get('/', (req, res) => {
     res.send('Home Page, its runningy')
 })
 
-app.get('/dashboard', (req, res) => {
+app.get('/dashboard', userAuth, (req, res) => {
     res.send('Dashboard Page')
 })
 
-app.get('/admin', (req, res) => {
+app.get('/admin', userAuth, userRole(ROLE.ADMIN), (req, res) => {
     res.send('Admin Page')
 })
 
@@ -30,4 +30,4 @@ function setUser(req, res, next) {
     next()
 }
 
-app.listen(8000)
+app.listen(8080)
